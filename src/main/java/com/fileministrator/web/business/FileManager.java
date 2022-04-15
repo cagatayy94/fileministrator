@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FileManager {
     List<File> getAll();
-    File get(Integer fileId);
+    File getFirstById(Integer fileId);
     void delete(Integer fileId);
     void update(File file);
     void create(MultipartFile multipartFile) throws IOException;

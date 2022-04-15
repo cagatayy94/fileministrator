@@ -38,8 +38,8 @@ public class FileManagerImpl implements FileManager{
     }
 
     @Override
-    public File get(Integer id) {
-        return this.fileRepository.getById(id);
+    public File getFirstById(Integer id) {
+        return this.fileRepository.getFirstById(id);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class FileManagerImpl implements FileManager{
 
         File newFile = new File();
         newFile.setName(multipartFile.getName());
-        newFile.setFile(multipartFile.getBytes());
         newFile.setSize(multipartFile.getSize());
+        newFile.setPath(SAVE_PATH + multipartFile.getOriginalFilename());
 
         String[] extensionArray = multipartFile.getOriginalFilename().split("\\.");
         newFile.setExtension(extensionArray[extensionArray.length-1]);// get last element
@@ -72,11 +72,11 @@ public class FileManagerImpl implements FileManager{
             throw new InvalidParameterException(this.FILE_EXTENSION_ERROR);
         }
 
-        if (newFile.getSize() > this.MAX_FILE_SIZE){
+        if (multipartFile.getSize() > this.MAX_FILE_SIZE){
             throw new InvalidParameterException(this.FILE_SIZE_ERROR);
         }
 
-        OutputStream out = new FileOutputStream(new java.io.File(SAVE_PATH + multipartFile.getOriginalFilename()));
+        OutputStream out = new FileOutputStream(newFile.getPath());
         out.write(multipartFile.getBytes());
         out.close();
 
