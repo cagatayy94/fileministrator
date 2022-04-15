@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -16,6 +14,7 @@ import javax.persistence.Id;
 @Entity
 public class File {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     @Column
     private String name;
@@ -24,7 +23,7 @@ public class File {
     @Column
     private String path;
     @Column
-    private String size;
+    private Long size;
     @Column
-    private Byte[] file;
+    private byte[] file;
 }
