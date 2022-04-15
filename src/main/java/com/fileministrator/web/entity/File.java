@@ -24,6 +24,4 @@ public class File {
     private String path;
     @Column
     private Long size;
-    @Column
-    private byte[] file;
 }
