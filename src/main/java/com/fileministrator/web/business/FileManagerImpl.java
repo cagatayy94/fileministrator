@@ -5,9 +5,7 @@ import com.fileministrator.web.repository.FileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.List;
@@ -61,7 +59,7 @@ public class FileManagerImpl implements FileManager{
     public void create(MultipartFile multipartFile) throws IOException {
 
         File newFile = new File();
-        newFile.setName(multipartFile.getName());
+        newFile.setName(multipartFile.getOriginalFilename());
         newFile.setSize(multipartFile.getSize());
         newFile.setPath(SAVE_PATH + multipartFile.getOriginalFilename());
 
@@ -81,5 +79,12 @@ public class FileManagerImpl implements FileManager{
         out.close();
 
         this.fileRepository.save(newFile);
+    }
+
+    @Override
+    public byte[] getContentById(Integer fileId) throws IOException {
+        File file = this.fileRepository.getFirstById(fileId);
+        FileInputStream createFile = new FileInputStream(file.getPath());
+        return createFile.readAllBytes();
     }
 }

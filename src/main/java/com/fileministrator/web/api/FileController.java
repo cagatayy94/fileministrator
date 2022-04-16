@@ -3,9 +3,7 @@ package com.fileministrator.web.api;
 import com.fileministrator.web.business.FileManager;
 import com.fileministrator.web.entity.File;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,6 +43,26 @@ public class FileController {
             return ResponseEntity.status(HttpStatus.CREATED).body("Success");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("{fileId}/content")
+    ResponseEntity<?> getContentById(@PathVariable Integer fileId){
+        try {
+            byte[] content = this.fileManager.getContentById(fileId);
+            File file = this.fileManager.getFirstById(fileId);
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+file.getName());
+
+            return ResponseEntity.ok()
+                    .headers(httpHeaders)
+                    .contentLength(file.getSize())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(content);
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
