@@ -65,4 +65,10 @@ public class FileController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("{fileId}")
+    ResponseEntity<?>delete(@PathVariable Integer fileId){
+        this.fileManager.delete(fileId);
+        return ResponseEntity.ok("Success");
+    }
 }
