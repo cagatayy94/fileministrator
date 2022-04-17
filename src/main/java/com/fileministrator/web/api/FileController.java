@@ -71,4 +71,20 @@ public class FileController {
         this.fileManager.delete(fileId);
         return ResponseEntity.ok("Success");
     }
+
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    ResponseEntity<String> update(
+            @RequestPart(value = "multipartFile") MultipartFile multipartFile,
+            @RequestParam(value = "fileId") Integer fileId
+    ) {
+        try {
+            this.fileManager.update(fileId, multipartFile);
+            return ResponseEntity.status(HttpStatus.OK).body("Success");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }
