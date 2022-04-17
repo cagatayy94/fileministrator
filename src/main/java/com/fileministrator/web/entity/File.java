@@ -12,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name="files")
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
